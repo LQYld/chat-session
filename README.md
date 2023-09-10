@@ -1,4 +1,4 @@
-# fe-ecosphere
+# chat-session
 
 ## Example UI
 
