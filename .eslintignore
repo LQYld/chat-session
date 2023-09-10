@@ -1,0 +1,5 @@
+**/*.json
+**/*.md
+/coverage
+/dist
+.next

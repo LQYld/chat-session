@@ -1,0 +1,21 @@
+on: [push]
+jobs:
+  ci:
+    runs-on: ubuntu-latest # 使用ubuntu系统镜像运行自动化脚本
+
+    steps: # 自动化步骤
+      - uses: actions/checkout@master  # 第一步，下载代码仓库
+      - name: Set pnpm # 设置 pnpm
+        uses: pnpm/action-setup@master
+        with:
+          version: 7
+      - name: Set node version 16 # 第二步安装 node 环境
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+      - name: Install Deps # 安装项目依赖
+        run: pnpm install --no-frozen-lockfile
+
+      - name: run ci # 项目构建
+        run: pnpm ci
