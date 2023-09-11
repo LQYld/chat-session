@@ -350,6 +350,12 @@ body {
     }
   }
 
+  &--offline {
+    & .user-status {
+      background-color: var(--colour-text-lighter);
+    }
+  }
+
   &--active {
     background-color: var(--colour-primary-lightest);
 
