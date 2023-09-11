@@ -5,11 +5,11 @@ const nextConfig = {
   experimental: {
     appDir: true
   },
-  transpilePackages: [
-    '@douyinfe/semi-ui',
-    '@douyinfe/semi-icons',
-    '@douyinfe/semi-illustrations'
-  ],
+  // transpilePackages: [
+  //   '@douyinfe/semi-ui',
+  //   '@douyinfe/semi-icons',
+  //   '@douyinfe/semi-illustrations'
+  // ],
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(gltf|hdr)$/,
@@ -29,14 +29,6 @@ const nextConfig = {
           name: '[name].[ext]' // keep the original name
         }
       }
-    })
-    config.module.rules.push({
-      test: /\.scss$/,
-      use: [
-        { loader: 'style-loader' },
-        { loader: 'css-loader' },
-        { loader: 'sass-loader' }
-      ]
     })
     return config
   }
