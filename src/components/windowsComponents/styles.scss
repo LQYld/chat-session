@@ -548,25 +548,77 @@ body {
     position: relative;
     color: var(--colour-text-darkest);
     padding: 0.5rem 1rem;
-    border-radius: 22px;
+    border-radius: 25px;
     background-color: var(--bg-page);
     max-width: 100rem;
 
     @include small-text-rfs;
 
-    overflow: hidden;
+    // overflow: hidden;
     overflow-wrap: break-word;
     word-break: break-word;
 
     &--you {
       margin-right: 2rem;
-      color: white;
-      background-color: var(--chat-bubble-you);
+      background-color: var(--chat-bubble-me);
+      animation: pop 0.3s cubic-bezier(0.36, -0.04, 0.15, 1.64) forwards;
     }
+
+    &--you:before {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      bottom: 0px;
+      left: -7px;
+      height: 20px;
+      border-left: 20px solid var(--chat-bubble-me);
+      border-bottom-right-radius: 16px 14px;
+      -webkit-transform: translate(0, -2px);
+    }
+    &--you:after {
+      content: "";
+      position: absolute;
+      z-index: 3;
+      bottom: 0px;
+      left: 4px;
+      width: 26px;
+      height: 20px;
+      background: var(--bg-page);
+      border-bottom-right-radius: 10px;
+      -webkit-transform: translate(-30px, -2px);
+    }
+
     &--me {
       margin-left: 2rem;
-      background-color: var(--chat-bubble-me);
+      margin-right: 1rem;
       align-self: flex-end;
+      color: white;
+      background-color: var(--chat-bubble-you);
+      animation: pop 0.3s cubic-bezier(0.36, -0.04, 0.15, 1.64) forwards;
+    }
+    
+    &--me:before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      bottom: 0px;
+      right: -7px;
+      height: 20px;
+      border-right: 20px solid var(--chat-bubble-you);;
+      border-bottom-left-radius: 16px 14px;
+      -webkit-transform: translate(0, -2px);
+    }
+    &--me:after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      bottom: 0px;
+      right: -56px;
+      width: 26px;
+      height: 20px;
+      background: var(--bg-page);
+      border-bottom-left-radius: 10px;
+      -webkit-transform: translate(-30px, -2px);
     }
   }
   &__time {
@@ -942,4 +994,15 @@ body {
 
 .pr-4add8px{
   padding-right: calc(1rem + 8px);
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.66);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
