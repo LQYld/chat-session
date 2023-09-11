@@ -1,4 +1,4 @@
-@import url("~@douyinfe/semi-ui/dist/css/semi.css");
+@import url("/node_modules/@douyinfe/semi-ui/dist/css/semi.min.css");
 @import url("animate.css");
 @tailwind base;
 @tailwind components;
