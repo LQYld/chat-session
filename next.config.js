@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const withCSS = require('@zeit/next-css')
-const withSass = require('@zeit/next-sass')
 const nextConfig = {
   experimental: {
     appDir: true
@@ -10,7 +8,7 @@ const nextConfig = {
     '@douyinfe/semi-icons',
     '@douyinfe/semi-illustrations'
   ],
-  webpack: (config) => {
+  webpack: (config, { dev, isServer }) => {
     config.module.rules.push({
       test: /\.(gltf|hdr)$/,
       use: {
@@ -30,8 +28,18 @@ const nextConfig = {
         }
       }
     })
+    if (!dev && !isServer) {
+      config.module.rules.push({
+        test: /\.scss$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' }
+        ]
+      })
+    }
     return config
   }
 }
 
-module.exports = Object.assign(withSass(withCSS({})), nextConfig)
+module.exports = nextConfig
