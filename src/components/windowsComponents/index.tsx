@@ -14,7 +14,7 @@ const scrollBubble = (element) => {
 
 const AiBubble = ({ index, message, thisRef }) => {
   return (
-    <li key={`chat__list-message_${index}`} ref={thisRef}>
+    <li key={`chat__list-message_AiBubble_${index}`} ref={thisRef}>
       {/* <div className="chat__time">Yesterday at 16:43</div> */}
       <div className={`chat__bubble chat__bubble--you`}>{message}</div>
     </li>
@@ -22,7 +22,7 @@ const AiBubble = ({ index, message, thisRef }) => {
 }
 const UserBubble = ({ index, message, thisRef }) => {
   return (
-    <li key={`chat__list-message_${index}`} ref={thisRef}>
+    <li key={`chat__list-message_UserBubble_${index}`} ref={thisRef}>
       {/* <div className="chat__time">Yesterday at 16:43</div> */}
       <div className={`chat__bubble chat__bubble--me`}>{message}</div>
     </li>
@@ -201,12 +201,14 @@ const WindowsComponentes = () => {
                           index={index}
                           message={item.message}
                           thisRef={scrollBubble}
+                          key={`chat__list-message_UserBubbleComponent_${index}`}
                         />
                       ) : (
                         <AiBubble
                           index={index}
                           message={item.message}
                           thisRef={scrollBubble}
+                          key={`chat__list-message_AiBubbleComponent_${index}`}
                         />
                       )
                     })}
