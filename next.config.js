@@ -30,8 +30,12 @@ const nextConfig = {
         }
       }
     })
+    config.module.rules.push({
+      test: /\.css$/,
+      use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
+    })
     return config
   }
 }
 
-module.exports = Object.assign(nextConfig, withSass(withCSS({})))
+module.exports = Object.assign(withSass(withCSS({})), nextConfig)
