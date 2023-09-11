@@ -5,11 +5,11 @@ const nextConfig = {
   experimental: {
     appDir: true
   },
-  // transpilePackages: [
-  //   '@douyinfe/semi-ui',
-  //   '@douyinfe/semi-icons',
-  //   '@douyinfe/semi-illustrations'
-  // ],
+  transpilePackages: [
+    '@douyinfe/semi-ui',
+    '@douyinfe/semi-icons',
+    '@douyinfe/semi-illustrations'
+  ],
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(gltf|hdr)$/,
