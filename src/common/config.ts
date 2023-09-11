@@ -1,6 +1,6 @@
 import doubaoLogo from '../../public/ai_logo/doubao.png'
 import yiyanLogo from '../../public/ai_logo/yiyan.png'
-import xfyunLogo from '../../public/ai_logo/xunfuyun.png'
+import xfyunLogo from '../../public/ai_logo/xfyun.ico'
 import glmLogo from '../../public/ai_logo/glm.png'
 
 export enum AI_STATE {
