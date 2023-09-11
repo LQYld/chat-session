@@ -1,17 +1,24 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react'
+import { AI_SESSION_MAP, AI_STATE } from '@/common/config'
+import { Tooltip } from '@douyinfe/semi-ui'
 import './styles.scss'
+import { on } from 'process'
 const WindowsComponentes = () => {
   const [currentTheme, setCurrentTheme] = useState('light')
   const toggleTheme = () => {
     if (currentTheme === 'light') {
       setCurrentTheme('dark')
       document.body.classList.add('dark-mode')
+      document.body.setAttribute('theme-mode', 'dark')
     } else {
       setCurrentTheme('light')
       document.body.classList.remove('dark-mode')
+      document.body.removeAttribute('theme-mode')
     }
   }
+  const [currentAiSession, setCurrentAiSession] = useState(AI_SESSION_MAP[0])
+  const onChangeSelectAiSession = (aiSession) => setCurrentAiSession(aiSession)
 
   return (
     <div className="home-page__content messages-page">
@@ -43,7 +50,7 @@ const WindowsComponentes = () => {
                   type="text"
                   className="form-control custom-form"
                   id="search"
-                  placeholder="Rechercher un message, un utilisateur…"
+                  placeholder="请输入您想搜素的内容 …"
                 />
                 <button type="submit" className="custom-form__search-submit">
                   <svg
@@ -61,32 +68,40 @@ const WindowsComponentes = () => {
             </div>
 
             <ul className="messages-page__list pb-5 px-1 px-md-3">
-              {new Array(11).fill('').map((item, index) => {
+              {AI_SESSION_MAP.map((item, index) => {
                 return (
                   <li
-                    key={index}
-                    className={`messaging-member messaging-member--online ${
-                      index === 1 ? 'messaging-member--active' : ''
+                    key={`AI_SESSION_MAP_${index}`}
+                    className={`messaging-member ${
+                      item.state === AI_STATE.ONLINE
+                        ? 'messaging-member--online'
+                        : 'messaging-member--offline'
+                    } ${
+                      currentAiSession.key === item.key
+                        ? 'messaging-member--active'
+                        : ''
                     }`}
+                    onClick={() => onChangeSelectAiSession(item)}
                   >
                     <div className="messaging-member__wrapper">
                       <div className="messaging-member__avatar">
                         <div style={{ position: 'relative' }}>
                           <img
-                            src="https://randomuser.me/api/portraits/thumb/women/56.jpg"
-                            alt="Jenny Smith"
+                            src={`${item.logo.src}`}
+                            alt={item.name}
                             loading="lazy"
                           />
                           <div className="user-status"></div>
                         </div>
                       </div>
                       <span className="messaging-member__name">
-                        Jenny Smith
+                        {item.name}
                       </span>
-                      <span className="messaging-member__message">
-                        Yes, I need your help with the project, it need it done
-                        by tomorrow 😫
-                      </span>
+                      <Tooltip position="topLeft" content={item.description}>
+                        <span className="messaging-member__message">
+                          {item.description}
+                        </span>
+                      </Tooltip>
                     </div>
                   </li>
                 )
@@ -98,20 +113,30 @@ const WindowsComponentes = () => {
           <div className="chat col-12 col-md-8 col-lg-7 col-xl-6 px-0 pl-md-1 w-4/5 h-full">
             <div className="chat__container">
               <div className="chat__wrapper py-2 pt-mb-2 pb-md-3">
-                <div className="chat__messaging messaging-member--online pb-2 pb-md-2 pl-2 pl-md-4 pr-2">
+                <div
+                  className={`chat__messaging ${
+                    currentAiSession.state === AI_STATE.ONLINE
+                      ? 'messaging-member--online'
+                      : 'messaging-member--offline'
+                  } pb-2 pb-md-2 pl-2 pl-md-4 pr-2`}
+                >
                   <div className="chat__infos pl-2 pl-md-0">
                     <div className="chat-member__wrapper" data-online="true">
                       <div className="chat-member__avatar">
                         <img
-                          src="https://randomuser.me/api/portraits/thumb/women/56.jpg"
-                          alt="Jenny Smith"
+                          src={currentAiSession.logo.src}
+                          alt={currentAiSession.name}
                           loading="lazy"
                         />
                         <div className="user-status user-status--large"></div>
                       </div>
                       <div className="chat-member__details">
-                        <span className="chat-member__name">Jenny Smith</span>
-                        <span className="chat-member__status">Online</span>
+                        <span className="chat-member__name">
+                          {currentAiSession.name}
+                        </span>
+                        <span className="chat-member__status">
+                          {currentAiSession.description}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -232,7 +257,7 @@ const WindowsComponentes = () => {
                       type="text"
                       className="form-control custom-form"
                       id="message"
-                      placeholder="Ecrivez un message …"
+                      placeholder="请输入您想了解的内容 …"
                     />
                     <button className="custom-form__send-img chat-attachment-btn">
                       <svg
