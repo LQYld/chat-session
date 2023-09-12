@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AI_SESSION_MAP, AI_STATE } from '@/common/config'
-import { mockSessionMessage } from '@/common/mock'
 import { Tooltip, Toast } from '@douyinfe/semi-ui'
 import { IconSetting } from '@douyinfe/semi-icons'
 import './styles.scss'
 import '@douyinfe/semi-ui/dist/css/semi.min.css'
+import { welcomeMessage } from '@/common/welcomeMessage'
 
 const scrollBubble = (element) => {
   if (element != null) {
@@ -13,17 +13,23 @@ const scrollBubble = (element) => {
   }
 }
 
-const AiBubble = ({ index, message, thisRef }) => {
+const AiBubble = ({ index, message, thisRef, aiSessionKey }) => {
   return (
-    <li key={`chat__list-message_AiBubble_${index}`} ref={thisRef}>
+    <li
+      key={`chat__${aiSessionKey}_list-message_AiBubble_${index}`}
+      ref={thisRef}
+    >
       {/* <div className="chat__time">Yesterday at 16:43</div> */}
       <div className={`chat__bubble chat__bubble--you`}>{message}</div>
     </li>
   )
 }
-const UserBubble = ({ index, message, thisRef }) => {
+const UserBubble = ({ index, message, thisRef, aiSessionKey }) => {
   return (
-    <li key={`chat__list-message_UserBubble_${index}`} ref={thisRef}>
+    <li
+      key={`chat__${aiSessionKey}_list-message_UserBubble_${index}`}
+      ref={thisRef}
+    >
       {/* <div className="chat__time">Yesterday at 16:43</div> */}
       <div className={`chat__bubble chat__bubble--me`}>{message}</div>
     </li>
@@ -46,7 +52,7 @@ const WindowsComponentes = () => {
   const [currentAiSession, setCurrentAiSession] = useState(AI_SESSION_MAP[0])
   const onChangeSelectAiSession = (aiSession) => setCurrentAiSession(aiSession)
 
-  const [sessionMessage, setSessionMessage] = useState(mockSessionMessage)
+  const [sessionMessage, setSessionMessage] = useState([])
 
   const [inputValue, setInputValue] = useState('')
 
@@ -65,6 +71,30 @@ const WindowsComponentes = () => {
     const value = event.target.value
     setInputValue(value)
   }
+
+  useEffect(() => {
+    setSessionMessage(welcomeMessage[currentAiSession.key])
+  }, [currentAiSession])
+
+  // 自动回复判断
+  useEffect(() => {
+    if (
+      sessionMessage &&
+      sessionMessage.length > welcomeMessage[currentAiSession.key].length &&
+      sessionMessage[sessionMessage.length - 1].isOwn === true &&
+      currentAiSession.state === AI_STATE.OFFLINE
+    ) {
+      setTimeout(() => {
+        setSessionMessage([
+          ...sessionMessage,
+          {
+            isOwn: false,
+            message: `您好，我现在无法回复您的消息，因为我正在离线。一旦我上线并看到您的消息，我会尽快回复。谢谢您的理解和耐心等待！`
+          }
+        ])
+      }, 400)
+    }
+  }, [sessionMessage])
 
   return (
     <div className="home-page__content messages-page">
@@ -200,16 +230,18 @@ const WindowsComponentes = () => {
                       return item.isOwn ? (
                         <UserBubble
                           index={index}
+                          aiSessionKey={currentAiSession.key}
                           message={item.message}
                           thisRef={scrollBubble}
-                          key={`chat__list-message_UserBubbleComponent_${index}`}
+                          key={`chat__list-message_UserBubbleComponent_${currentAiSession.key}_${index}`}
                         />
                       ) : (
                         <AiBubble
                           index={index}
+                          aiSessionKey={currentAiSession.key}
                           message={item.message}
                           thisRef={scrollBubble}
-                          key={`chat__list-message_AiBubbleComponent_${index}`}
+                          key={`chat__list-message_AiBubbleComponent_${currentAiSession.key}_${index}`}
                         />
                       )
                     })}
