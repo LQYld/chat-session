@@ -5,6 +5,7 @@ import { mockSessionMessage } from '@/common/mock'
 import { Tooltip, Toast } from '@douyinfe/semi-ui'
 import { IconSetting } from '@douyinfe/semi-icons'
 import './styles.scss'
+import '@douyinfe/semi-ui/dist/css/semi.min.css'
 
 const scrollBubble = (element) => {
   if (element != null) {
