@@ -4,7 +4,7 @@ import { AI_SESSION_MAP, AI_STATE } from '@/common/config'
 import { mockSessionMessage } from '@/common/mock'
 import { Tooltip, Toast } from '@douyinfe/semi-ui'
 import { IconSetting } from '@douyinfe/semi-icons'
-import './styles.scss'
+import './styles.css'
 
 const scrollBubble = (element) => {
   if (element != null) {
