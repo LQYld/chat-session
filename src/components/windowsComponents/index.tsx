@@ -67,9 +67,16 @@ const WindowsComponentes = () => {
     setInputValue('')
   }
 
-  const handleInputChange = (event) => {
+  const handleSendInputChange = (event) => {
     const value = event.target.value
     setInputValue(value)
+  }
+
+  const handleSendInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      sendMessage()
+    }
   }
 
   useEffect(() => {
@@ -256,7 +263,8 @@ const WindowsComponentes = () => {
                       id="message"
                       placeholder="请输入您想了解的内容 …"
                       value={inputValue}
-                      onChange={handleInputChange}
+                      onChange={handleSendInputChange}
+                      onKeyDown={handleSendInputKeyDown}
                     />
                     <button className="custom-form__send-img chat-attachment-btn">
                       <svg
