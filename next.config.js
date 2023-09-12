@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
-// const withCSS = require('@zeit/next-css')
-// const withSass = require('@zeit/next-sass')
-// const semi = require('@douyinfe/semi-next').default({
-//   /* the extension options */
-// })
+const withCSS = require('@zeit/next-css')
+const withSass = require('@zeit/next-sass')
+const semi = require('@douyinfe/semi-next').default({
+  /* the extension options */
+})
 const nextConfig = {
   experimental: {
     appDir: true
@@ -37,5 +37,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
-// module.exports = Object.assign(withSass(withCSS({})), nextConfig, semi)
+module.exports = Object.assign(withSass(withCSS({})), nextConfig, semi)
