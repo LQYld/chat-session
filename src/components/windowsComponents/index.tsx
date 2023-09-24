@@ -7,7 +7,6 @@ import { IconSetting } from '@douyinfe/semi-icons'
 import './styles.scss'
 import '@douyinfe/semi-ui/dist/css/semi.min.css'
 import { welcomeMessage } from '@/common/welcomeMessage'
-// import aiBubbleTextParsing from '@/utils/aiBubbleTextParsing'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -183,6 +182,16 @@ const WindowsComponentes = () => {
   }
 
   useEffect(() => {
+    if (!currentAiSession.example) {
+      if (!AI_CLASS_MAP[currentAiSession.key]) return
+      const currentConfigStr = localStorage.getItem(AI_CONFIG_KEY)
+      const currentConfig = JSON.parse(currentConfigStr || `{}`)
+      const targetConfig = currentConfig[currentAiSession.key] || {}
+      currentAiSession.example = new AI_CLASS_MAP[currentAiSession.key]({
+        client_id: targetConfig?.client_id,
+        client_secret: targetConfig?.client_secret
+      })
+    }
     if (currentAiSession.example) {
       let char_records = currentAiSession.example.getChatRecords()
       if (char_records.length === 0) {
@@ -204,17 +213,6 @@ const WindowsComponentes = () => {
         title: 'Online notification',
         content: 'Your smart partner "ERNIE Bot" is online~',
         duration: 3
-      })
-    }
-
-    if (!currentAiSession.example) {
-      if (!AI_CLASS_MAP[currentAiSession.key]) return
-      const currentConfigStr = localStorage.getItem(AI_CONFIG_KEY)
-      const currentConfig = JSON.parse(currentConfigStr || `{}`)
-      const targetConfig = currentConfig[currentAiSession.key] || {}
-      currentAiSession.example = new AI_CLASS_MAP[currentAiSession.key]({
-        client_id: targetConfig?.client_id,
-        client_secret: targetConfig?.client_secret
       })
     }
   }, [currentAiSession])
@@ -273,7 +271,7 @@ const WindowsComponentes = () => {
       currentAiSession.example = new AI_CLASS_MAP[currentAiSession.key](
         targetConfig
       )
-      setSettingModal(true)
+      setSettingModal(false)
     } else {
       Toast.warning({
         content: 'Please fill in the correct client_id and client_secret !',
