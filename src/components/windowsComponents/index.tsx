@@ -183,14 +183,16 @@ const WindowsComponentes = () => {
 
   useEffect(() => {
     if (!currentAiSession.example) {
-      if (!AI_CLASS_MAP[currentAiSession.key]) return
-      const currentConfigStr = localStorage.getItem(AI_CONFIG_KEY)
-      const currentConfig = JSON.parse(currentConfigStr || `{}`)
-      const targetConfig = currentConfig[currentAiSession.key] || {}
-      currentAiSession.example = new AI_CLASS_MAP[currentAiSession.key]({
-        client_id: targetConfig?.client_id,
-        client_secret: targetConfig?.client_secret
-      })
+      if (AI_CLASS_MAP[currentAiSession.key]) {
+        const currentConfigStr = localStorage.getItem(AI_CONFIG_KEY)
+        const currentConfig = JSON.parse(currentConfigStr || `{}`)
+        const targetConfig = currentConfig[currentAiSession.key] || {}
+        currentAiSession.example = new AI_CLASS_MAP[currentAiSession.key]({
+          client_id: targetConfig?.client_id,
+          client_secret: targetConfig?.client_secret,
+          proxyObject: currentAiSession
+        })
+      }
     }
     if (currentAiSession.example) {
       let char_records = currentAiSession.example.getChatRecords()
@@ -207,7 +209,7 @@ const WindowsComponentes = () => {
 
     if (
       currentAiSession?.example &&
-      currentAiSession.example.state === AI_STATE.ONLINE
+      currentAiSession.state === AI_STATE.ONLINE
     ) {
       Notification.success({
         title: 'Online notification',
@@ -268,9 +270,10 @@ const WindowsComponentes = () => {
       }
       currentConfig[currentAiSession.key] = targetConfig
       localStorage.setItem(AI_CONFIG_KEY, JSON.stringify(currentConfig))
-      currentAiSession.example = new AI_CLASS_MAP[currentAiSession.key](
-        targetConfig
-      )
+      currentAiSession.example = new AI_CLASS_MAP[currentAiSession.key]({
+        ...targetConfig,
+        proxyObject: currentAiSession
+      })
       setSettingModal(false)
     } else {
       Toast.warning({
