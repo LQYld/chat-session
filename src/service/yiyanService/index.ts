@@ -8,11 +8,14 @@ class YiyanClass {
   protected chat_records = []
   public state = AI_STATE.OFFLINE
 
+  public proxyObject = null
+
   private session_context = []
 
-  constructor({ client_id, client_secret }) {
+  constructor({ client_id, client_secret, proxyObject }) {
     this.client_id = client_id
     this.client_secret = client_secret
+    this.proxyObject = proxyObject
     if (client_id && client_secret) {
       this.initYiyanSession()
     }
@@ -33,6 +36,7 @@ class YiyanClass {
     this.access_token = access_token
     this.session_key = session_key
     this.state = AI_STATE.ONLINE
+    this.proxyObject.state = AI_STATE.ONLINE
   }
 
   initChatRecords = (chat_records) => (this.chat_records = chat_records)

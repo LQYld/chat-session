@@ -2,6 +2,7 @@ import doubaoLogo from '../../public/ai_logo/doubao.png'
 import yiyanLogo from '../../public/ai_logo/yiyan.png'
 import xfyunLogo from '../../public/ai_logo/xfyun.ico'
 import glmLogo from '../../public/ai_logo/glm.png'
+import { AI_STATE } from './enum'
 
 export enum AI_KEY {
   AI_SESSION_MAP_yiyan = 'AI_SESSION_MAP_yiyan', // 文心一言
@@ -17,7 +18,8 @@ export const AI_SESSION_MAP = [
     description:
       '作为你的智能伙伴，我既能写文案、想点子，又能陪你聊天、答疑解惑。',
     key: AI_KEY.AI_SESSION_MAP_yiyan,
-    example: null
+    example: null,
+    state: AI_STATE.OFFLINE
   },
   {
     logo: xfyunLogo,
@@ -25,14 +27,16 @@ export const AI_SESSION_MAP = [
     description:
       '能够学习和理解人类的语言，进行多轮对话。回答问题，高效便捷地帮助人们获取信息、知识和灵感',
     key: AI_KEY.AI_SESSION_MAP_xfyun,
-    example: null
+    example: null,
+    state: AI_STATE.OFFLINE
   },
   {
     logo: doubaoLogo,
     name: '豆包',
     description: '你好，我是你的 AI 朋友豆包！希望我能帮到你。',
     key: AI_KEY.AI_SESSION_MAP_doubao,
-    example: null
+    example: null,
+    state: AI_STATE.OFFLINE
   },
   {
     logo: glmLogo,
@@ -40,7 +44,8 @@ export const AI_SESSION_MAP = [
     description:
       '记得多喝水哦，小智可以帮你轻松获取各类信息和辅助创作，让你的时间用在更宝贵的地方。',
     key: AI_KEY.AI_SESSION_MAP_glm,
-    example: null
+    example: null,
+    state: AI_STATE.OFFLINE
   }
 ]
 
