@@ -56,22 +56,32 @@ class YiyanClass {
       access_token: this.access_token,
       messages: newSessionMeesage
     }
-    const fetchResponse = await fetch(`/api/yiyanSession/sendMessage`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newSession_records)
-    })
-    const { result } = await fetchResponse.json()
-    this.chat_records = [
-      ...newChatRecords,
-      { isOwn: false, role: 'assistant', message: result }
-    ]
-    this.session_context = [
-      ...newSessionMeesage,
-      { isOwn: false, role: 'assistant', message: result }
-    ]
+    try {
+      const fetchResponse = await fetch(`/api/yiyanSession/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newSession_records)
+      })
+      const { result } = await fetchResponse.json()
+      this.chat_records = [
+        ...newChatRecords,
+        { isOwn: false, role: 'assistant', message: result }
+      ]
+      this.session_context = [
+        ...newSessionMeesage,
+        { isOwn: false, role: 'assistant', message: result }
+      ]
+    } catch (error) {
+      this.chat_records = [
+        ...newChatRecords,
+        {
+          isOwn: false,
+          message: `您好，我现在无法回复您的消息，因为我正在离线。一旦我上线并看到您的消息，我会尽快回复。谢谢您的理解和耐心等待！`
+        }
+      ]
+    }
     callback(this.chat_records)
   }
 }
